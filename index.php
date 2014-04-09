@@ -2,44 +2,43 @@
 
 	<div id="container">
 		<div id="content">
+			
+			<div class="section">
+			    <p class="h2">LATEST</p>
+				<ul>
+				<?php $my_query = new WP_Query('posts_per_page=7');				
+						while ( $my_query->have_posts() ) : $my_query->the_post() ?>
 
-			<div id="nav-above" class="navigation">
-				<div class="nav-previous"><?php next_posts_link(__( '<span class="meta-nav">&laquo;</span> Older posts', 'sandbox' )) ?></div>
-				<div class="nav-next"><?php previous_posts_link(__( 'Newer posts <span class="meta-nav">&raquo;</span>', 'sandbox' )) ?></div>
+				<li id="post-<?php the_ID() ?>" class="<?php sandbox_post_class() ?>">
+					<span class="entry-date"><abbr class="published" title="<?php the_time('Y-m-d\TH:i:sO') ?>"><?php unset($previousday); printf( __( '%1$s', 'sandbox' ), the_date( 'D, M d, Y', '', '', false ), get_the_time() ) ?></abbr></span>
+					<span class="sep"> —  </span>
+					<span class="entry-title"><a href="<?php the_permalink() ?>" title="<?php printf( __('Permalink to %s', 'sandbox'), the_title_attribute('echo=0') ) ?>" rel="bookmark"><?php the_title() ?></a></span>
+				</li><!-- .post -->
+
+				<?php endwhile; ?>
+				</ul>
 			</div>
 
-<?php while ( have_posts() ) : the_post() ?>
+			<div class="section">
+			    <p class="h2">about me</p>
 
-			<div id="post-<?php the_ID() ?>" class="<?php sandbox_post_class() ?>">
-				<h2 class="entry-title"><a href="<?php the_permalink() ?>" title="<?php printf( __('Permalink to %s', 'sandbox'), the_title_attribute('echo=0') ) ?>" rel="bookmark"><?php the_title() ?></a></h2>
-				<div class="entry-date"><abbr class="published" title="<?php the_time('Y-m-d\TH:i:sO') ?>"><?php unset($previousday); printf( __( '%1$s &#8211; %2$s', 'sandbox' ), the_date( '', '', '', false ), get_the_time() ) ?></abbr></div>
-				<div class="entry-content">
-<?php the_content( __( 'Read More <span class="meta-nav">&raquo;</span>', 'sandbox' ) ) ?>
-
-				<?php wp_link_pages('before=<div class="page-link">' . __( 'Pages:', 'sandbox' ) . '&after=</div>') ?>
-				</div>
-				<div class="entry-meta">
-					<span class="author vcard"><?php printf( __( 'By %s', 'sandbox' ), '<a class="url fn n" href="' . get_author_posts_url( $authordata->ID, $authordata->user_nicename ) . '" title="' . sprintf( __( 'View all posts by %s', 'sandbox' ), $authordata->display_name ) . '">' . get_the_author() . '</a>' ) ?></span>
-					<span class="meta-sep">|</span>
-					<span class="cat-links"><?php printf( __( 'Posted in %s', 'sandbox' ), get_the_category_list(', ') ) ?></span>
-					<span class="meta-sep">|</span>
-					<?php the_tags( __( '<span class="tag-links">Tagged ', 'sandbox' ), ", ", "</span>\n\t\t\t\t\t<span class=\"meta-sep\">|</span>\n" ) ?>
-<?php edit_post_link( __( 'Edit', 'sandbox' ), "\t\t\t\t\t<span class=\"edit-link\">", "</span>\n\t\t\t\t\t<span class=\"meta-sep\">|</span>\n" ) ?>
-					<span class="comments-link"><?php comments_popup_link( __( 'Comments (0)', 'sandbox' ), __( 'Comments (1)', 'sandbox' ), __( 'Comments (%)', 'sandbox' ) ) ?></span>
-				</div>
-			</div><!-- .post -->
-
-<?php comments_template() ?>
-
-<?php endwhile; ?>
-
-			<div id="nav-below" class="navigation">
-				<div class="nav-previous"><?php next_posts_link(__( '<span class="meta-nav">&laquo;</span> Older posts', 'sandbox' )) ?></div>
-				<div class="nav-next"><?php previous_posts_link(__( 'Newer posts <span class="meta-nav">&raquo;</span>', 'sandbox' )) ?></div>
+				<ul class="me">
+					<li>关注我的 <a class="reference external" href="https://twitter.com/supergrubby" target="_blank">Twitter</a></li>
+					<li>发一封 <a class="reference external" href="mailto:supergrubby@gmail.com">邮件</a> 给我</li>
+					<li>了解我在 <a class="reference external" href="http://github.com/supergrubby" target="_blank">Github</a> 上折腾什么</li>
+				</ul>
 			</div>
+			<div class="section">
+			    <p class="h2">find me elsewhere</p>
+				<ul class="simple">
+					<li><a href="https://twitter.com/supergrubby/" target="_blank">Twitter</a></li>
+					<li><a href="http://github.com/supergrubby/" target="_blank">Github</a></li>
+				</ul>
+			</div>			
 
 		</div><!-- #content -->
 	</div><!-- #container -->
 
-<?php get_sidebar() ?>
+
+<?php //get_sidebar() ?>
 <?php get_footer() ?>
