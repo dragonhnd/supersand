@@ -67,7 +67,7 @@ function sandbox_body_class( $print = true ) {
 		}
 
 		// Adds author class for the post author
-		$c[] = 's-author-' . sanitize_title_with_dashes(strtolower(get_the_author_meta('login')));
+		$c[] = 's-author-' . sanitize_title_with_dashes(strtolower(get_the_author_login()));
 		rewind_posts();
 	}
 
@@ -360,8 +360,8 @@ function sandbox_gallery($attr) {
 function widget_sandbox_search($args) {
 	extract($args);
 	$options = get_option('widget_sandbox_search');
-	$title = empty($options['title']) ? __( 'Search', 'sandbox' ) : esc_attr($options['title']);
-	$button = empty($options['button']) ? __( 'Find', 'sandbox' ) : esc_attr($options['button']);
+	$title = empty($options['title']) ? __( 'Search', 'sandbox' ) : attribute_escape($options['title']);
+	$button = empty($options['button']) ? __( 'Find', 'sandbox' ) : attribute_escape($options['button']);
 ?>
 			<?php echo $before_widget ?>
 				<?php echo $before_title ?><label for="s"><?php echo $title ?></label><?php echo $after_title ?>
@@ -386,8 +386,8 @@ function widget_sandbox_search_control() {
 		$options = $newoptions;
 		update_option( 'widget_sandbox_search', $options );
 	}
-	$title = esc_attr($options['title']);
-	$button = esc_attr($options['button']);
+	$title = attribute_escape($options['title']);
+	$button = attribute_escape($options['button']);
 ?>
 	<p><label for="search-title"><?php _e( 'Title:', 'sandbox' ) ?> <input class="widefat" id="search-title" name="search-title" type="text" value="<?php echo $title; ?>" /></label></p>
 	<p><label for="search-button"><?php _e( 'Button Text:', 'sandbox' ) ?> <input class="widefat" id="search-button" name="search-button" type="text" value="<?php echo $button; ?>" /></label></p>
@@ -399,7 +399,7 @@ function widget_sandbox_search_control() {
 function widget_sandbox_meta($args) {
 	extract($args);
 	$options = get_option('widget_meta');
-	$title = empty($options['title']) ? __( 'Meta', 'sandbox' ) : esc_attr($options['title']);
+	$title = empty($options['title']) ? __( 'Meta', 'sandbox' ) : attribute_escape($options['title']);
 ?>
 			<?php echo $before_widget; ?>
 				<?php echo $before_title . $title . $after_title; ?>
@@ -418,13 +418,13 @@ function widget_sandbox_meta($args) {
 function widget_sandbox_rsslinks($args) {
 	extract($args);
 	$options = get_option('widget_sandbox_rsslinks');
-	$title = empty($options['title']) ? __( 'RSS Links', 'sandbox' ) : esc_attr($options['title']);
+	$title = empty($options['title']) ? __( 'RSS Links', 'sandbox' ) : attribute_escape($options['title']);
 ?>
 		<?php echo $before_widget; ?>
 			<?php echo $before_title . $title . $after_title; ?>
 			<ul>
-				<li><a href="<?php bloginfo('rss2_url') ?>" title="<?php echo _wp_specialchars( get_bloginfo('name'), 1 ) ?> <?php _e( 'Posts RSS feed', 'sandbox' ); ?>" rel="alternate" type="application/rss+xml"><?php _e( 'All posts', 'sandbox' ) ?></a></li>
-				<li><a href="<?php bloginfo('comments_rss2_url') ?>" title="<?php echo _wp_specialchars(bloginfo('name'), 1) ?> <?php _e( 'Comments RSS feed', 'sandbox' ); ?>" rel="alternate" type="application/rss+xml"><?php _e( 'All comments', 'sandbox' ) ?></a></li>
+				<li><a href="<?php bloginfo('rss2_url') ?>" title="<?php echo wp_specialchars( get_bloginfo('name'), 1 ) ?> <?php _e( 'Posts RSS feed', 'sandbox' ); ?>" rel="alternate" type="application/rss+xml"><?php _e( 'All posts', 'sandbox' ) ?></a></li>
+				<li><a href="<?php bloginfo('comments_rss2_url') ?>" title="<?php echo wp_specialchars(bloginfo('name'), 1) ?> <?php _e( 'Comments RSS feed', 'sandbox' ); ?>" rel="alternate" type="application/rss+xml"><?php _e( 'All comments', 'sandbox' ) ?></a></li>
 			</ul>
 		<?php echo $after_widget; ?>
 <?php
@@ -440,7 +440,7 @@ function widget_sandbox_rsslinks_control() {
 		$options = $newoptions;
 		update_option( 'widget_sandbox_rsslinks', $options );
 	}
-	$title = esc_attr($options['title']);
+	$title = attribute_escape($options['title']);
 ?>
 	<p><label for="rsslinks-title"><?php _e( 'Title:', 'sandbox' ) ?> <input class="widefat" id="rsslinks-title" name="rsslinks-title" type="text" value="<?php echo $title; ?>" /></label></p>
 	<input type="hidden" id="rsslinks-submit" name="rsslinks-submit" value="1" />
@@ -469,7 +469,7 @@ function sandbox_widgets_init() {
 		'description'  =>  __( "A search form for your blog (Sandbox)", "sandbox" )
 	);
 	wp_register_sidebar_widget( 'search', __( 'Search', 'sandbox' ), 'widget_sandbox_search', $widget_ops );
-	wp_unregister_widget_control('search'); // We're being Sandbox-specific; remove WP default
+	unregister_widget_control('search'); // We're being Sandbox-specific; remove WP default
 	wp_register_widget_control( 'search', __( 'Search', 'sandbox' ), 'widget_sandbox_search_control' );
 
 	// Sandbox Meta widget
@@ -478,7 +478,7 @@ function sandbox_widgets_init() {
 		'description'  =>  __( "Log in/out and administration links (Sandbox)", "sandbox" )
 	);
 	wp_register_sidebar_widget( 'meta', __( 'Meta', 'sandbox' ), 'widget_sandbox_meta', $widget_ops );
-	wp_unregister_widget_control('meta'); // We're being Sandbox-specific; remove WP default
+	unregister_widget_control('meta'); // We're being Sandbox-specific; remove WP default
 	wp_register_widget_control( 'meta', __( 'Meta', 'sandbox' ), 'wp_widget_meta_control' );
 
 	//Sandbox RSS Links widget
